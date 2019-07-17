@@ -1,0 +1,114 @@
+<div *ngIf="loading">
+  <div fxLayout="row"
+       fxLayoutAlign="center center">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>
+<div *ngIf="!loading">
+  <div fxLayout="column wrap"
+       fxLayout.gt-xs="row"
+       fxLayoutGap="2%">
+    <div fxFlex>
+      <mat-card class="card infocard"
+                [class.xs]="['card-xs', 'infocard-xs']">
+        <mat-card-header class="card-header">
+          <h3>
+            Medarbejderliste
+          </h3>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="search">
+            <mat-form-field>
+              <input matInput
+                     (keyup)="applyFilter($event.target.value)"
+                     placeholder="Søg">
+            </mat-form-field>
+          </div>
+          <div class="table-overflow">
+            <div class="container">
+
+              <!-- Name Column -->
+
+
+              <table mat-table
+                     [dataSource]="dataSource"
+                     matSort>
+
+                     
+                <ng-container matColumnDef="displayName">
+                  <th mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header> Navn </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{row.displayName}} </td>
+                </ng-container>
+
+                <!-- Role Column -->
+                <ng-container matColumnDef="role">
+                  <th mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header> Rolle </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{getRoleText(row.role)}} </td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header> Email </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{row.email}} </td>
+                </ng-container>
+
+                <!-- Mobile Column -->
+                <ng-container matColumnDef="mobile">
+                  <th mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header> Mobilnummer </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{row.mobile ? row.mobile : 'Ikke angivet'}} </td>
+                </ng-container>
+
+                <!-- HasCar Column -->
+                <ng-container matColumnDef="hasCar">
+                  <th mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header> Har bil? </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{row.hasCar ? 'Ja' : 'nej'}} </td>
+                </ng-container>
+
+                <!-- HasDriverLicens Column -->
+                <ng-container matColumnDef="hasDriverLicens">
+                  <th mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header> Har kørekort? </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </td>
+                </ng-container>
+
+                <!-- inactive Column -->
+                <ng-container matColumnDef="deactive">
+                  <th mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header> Aktiv? </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{!row.deactive ? 'Ja' : 'nej'}} </td>
+                </ng-container>
+
+                <tr mat-header-row
+                    *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row
+                    *matRowDef="let row; columns: displayedColumns;"
+                    class="row"
+                    (click)="gotoEmployee(row.uid)">
+                </tr>
+              </table>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

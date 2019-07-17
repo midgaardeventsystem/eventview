@@ -1,0 +1,271 @@
+<mat-sidenav-container class="container"
+                       [class.fullscreen]="fullscreenActive">
+
+
+
+  <mat-toolbar class="purple">
+
+    <button *ngIf="isAuthenticated"
+            mat-icon-button
+            (click)="sidenav.open()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span>EVENTVIEW</span>
+    <span class="spacer"></span>
+
+    <!-- navbar -->
+
+    <span *ngIf="isAuthenticated" >
+
+        <button mat-button
+                *ngFor="let item of dashboardNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+  
+       <!--Events dropdown-->
+
+        <span *ngIf="isAdminOrEventLeader()">
+  
+            <button mat-button [matMenuTriggerFor]="belowMenu">
+              <span>Events</span>
+            </button>
+          <mat-menu #belowMenu="matMenu" yPosition="below">
+  
+             <button mat-menu-item
+                  *ngFor="let item of eventNavigationItems"
+                  [routerLink]="item.url"
+                  routerLinkActive="active-link"
+                  (click)="sidenav.close()">
+                 <span>{{item.text}}</span>
+             </button>
+        
+              <button mat-menu-item
+                      *ngFor="let item of payoutNavigationItems"
+                      [routerLink]="item.url"
+                      routerLinkActive="active-link"
+                      (click)="sidenav.close()">
+                <span>{{item.text}}</span>
+              </button>
+  
+              <button mat-menu-item>
+               <span>Indtast Afrapportering (ny)</span> 
+              </button>
+
+              <button mat-menu-item>
+               <span>Export Events (tidligere export event liste)</span> 
+              </button>
+          </mat-menu>
+ 
+
+      <!--Medarbejdere dropdown-->
+
+      <span *ngIf="isAdminOrEventLeader()">
+
+            <button mat-button [matMenuTriggerFor]="belowMenu">
+              <span>Medarbejdere</span>
+            </button>
+            <mat-menu #belowMenu="matMenu" yPosition="below">
+  
+
+          <button mat-menu-item
+          *ngFor="let item of employeeNavigationItems"
+          [routerLink]="item.url"
+          routerLinkActive="active-link"
+          (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+          </button>
+
+          <button mat-menu-item
+              *ngFor="let item of employeeCreateNavigationItems"
+              [routerLink]="item.url"
+              outerLinkActive="active-link"
+              (click)="sidenav.close()">
+              <span>{{item.text}}</span> 
+          </button>
+
+
+          </mat-menu>
+      </span>
+  
+      
+    </span>
+
+
+          
+  
+        <span *ngIf="isAdmin()">
+            <button mat-button 
+                    [matMenuTriggerFor]="belowMenu">
+                <span>Indstillinger</span>
+            </button>
+            <mat-menu #belowMenu="matMenu" yPosition="below">
+  
+  
+          <button mat-menu-item
+                  *ngFor="let item of eventTypeNavigationItems"
+                  [routerLink]="item.url"
+                  routerLinkActive="active-link"
+                  (click)="sidenav.close()">
+            <span>{{item.text}}</span>
+          </button>
+  
+  
+          <button mat-menu-item
+                  *ngFor="let item of skillNavigationItems"
+                  [routerLink]="item.url"
+                  routerLinkActive="active-link"
+                  (click)="sidenav.close()">
+            <span>{{item.text}}</span>
+          </button>
+  
+  
+          <button mat-menu-item
+                  *ngFor="let item of wagerNavigationItems"
+                  [routerLink]="item.url"
+                  routerLinkActive="active-link"
+                  (click)="sidenav.close()">
+            <span>{{item.text}}</span>
+          </button>
+  
+          </mat-menu>
+      </span>
+
+     <!--BESKEDER-->
+
+      <span *ngIf="isAdmin()">
+          <button mat-button
+              *ngFor="let item of messagesNavigationItems"
+              [routerLink]="item.url"
+              routerLinkActive="active-link"
+              (click)="sidenav.close()">
+            <span>{{item.text}}</span>
+          </button>
+      </span>
+
+
+        <!--LØN dropdown-->
+          <span *ngIf="isAdmin()">
+              <button mat-button [matMenuTriggerFor]="belowMenu">
+                  <span>Løn</span>
+              </button>
+              <mat-menu #belowMenu="matMenu" yPosition="below">
+                  <button mat-menu-item>
+                      <span>Timeopgørelse (ny)</span> 
+                  </button>
+
+                  <button mat-menu-item
+                    *ngFor="let item of eventAdminNavigationItems"
+                    [routerLink]="item.url"
+                    routerLinkActive="active-link"
+                    (click)="sidenav.close()">
+                    <span>{{item.text}}</span>
+                  </button>
+
+              </mat-menu>
+          </span>
+      </span>
+
+
+
+
+
+    <button *ngIf="isAuthenticated"
+            mat-icon-button
+            [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+
+    <mat-menu #menu>
+      <button mat-menu-item
+              matTooltip="Logout"
+              (click)="logout()">
+        <mat-icon>lock</mat-icon>
+        <span>Logud</span>
+      </button>
+      <button mat-menu-item
+              (click)="gotomyprofile()">
+        <mat-icon>account_circle</mat-icon>
+        <span>Min profil</span>
+      </button>
+    </mat-menu>
+
+    
+  </mat-toolbar>
+
+
+  
+  
+  
+  <mat-sidenav #sidenav
+               class="sidenav">
+    <div class="logo-container">
+      <a class="splash-mini black"
+         routerLink="/">
+      </a>
+      <span>Menu</span>
+    </div>
+    <mat-nav-list class="nav-list">
+      <span *ngIf="isAdminOrEventLeader()">
+        <a *ngFor="let item of payoutNavigationItems"
+           mat-list-item
+           [routerLink]="item.url"
+           routerLinkActive="active-link"
+           (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </a>
+        <h3>Medarbejdere</h3>
+        <a *ngFor="let item of employeeNavigationItems"
+           mat-list-item
+           [routerLink]="item.url"
+           routerLinkActive="active-link"
+           (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </a>
+      </span>
+      <span *ngIf="isAdmin()">
+        <a *ngFor="let item of skillNavigationItems"
+           mat-list-item
+           [routerLink]="item.url"
+           routerLinkActive="active-link"
+           (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </a>
+        <a *ngFor="let item of wagerNavigationItems"
+           mat-list-item
+           [routerLink]="item.url"
+           routerLinkActive="active-link"
+           (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </a>
+      </span>
+      <span *ngIf="isAdmin()">
+        <h3>Beskeder</h3>
+        <a *ngFor="let item of messagesNavigationItems"
+           mat-list-item
+           [routerLink]="item.url"
+           routerLinkActive="active-link"
+           (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </a>
+      </span>
+      <span *ngIf="isAdmin()">
+        <h3>Export CSV</h3>
+        <a *ngFor="let item of eventAdminNavigationItems"
+           mat-list-item
+           [routerLink]="item.url"
+           routerLinkActive="active-link"
+           (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </a>
+      </span>
+    </mat-nav-list>
+  </mat-sidenav>
+  <div class="content-container">
+    <router-outlet></router-outlet>
+  </div>
+</mat-sidenav-container>
